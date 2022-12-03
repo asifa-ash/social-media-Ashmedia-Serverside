@@ -83,7 +83,7 @@ export const deletePost = async (req, res) => {
 export const deleteRPost = async (req, res) => {
   const id = req.params.id;
   const userId = req.params.uid;
-  console.log(userId, "hhhhhhhhhhhhhhhj");
+  console.log(userId, "Hell", req.params);
 
   // const { userId } = req.body;
   const admin = await UserModel.findById(userId);
@@ -155,6 +155,29 @@ export const likePost = async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
   }
+};
+
+// create comments
+export const createComment = async (req, res) => {
+  const id = req.params.id;
+
+  const msg = req.body;
+  console.log(msg, "kkkkkkkkkkkkkk");
+  const post = await PostModel.findById(id);
+  console.log(post);
+  if (post) {
+    await post.updateOne({ $push: { Comment: msg } });
+  }
+};
+
+// get comments
+export const getComment = async (req, res) => {
+  const id = req.params.id;
+
+  const post = await PostModel.findById(id)
+  
+  res.status(200).json(post);
+  console.log(post, "ooooooooo");
 };
 
 // Get timeline posts
